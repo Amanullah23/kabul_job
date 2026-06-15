@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { LuNetwork } from "react-icons/lu";
-import { HiRectangleGroup } from "react-icons/hi2";
+import { HiBars3BottomRight } from "react-icons/hi2";
+import { BriefcaseIcon } from "lucide-react";
 import Navlinks from "@/constant/constant";
 import Link from "next/link";
-import { HiBars3BottomRight } from "react-icons/hi2";
+import { usePathname } from "next/navigation";
 import ThemeToggler from "@/components/Helper/ThemeToggler";
 
 type Props = {
@@ -13,61 +13,87 @@ type Props = {
 
 const Nav = ({ openNav }: Props) => {
   const [navBg, setNavBg] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handler = () => {
-      if (window.scrollY >= 90) setNavBg(true);
-      else setNavBg(false);
+      setNavBg(window.scrollY >= 90);
     };
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
-    <div
-      className={`transition-all duration-200 h-[12vh] w-full fixed z-[10000]
-      ${navBg ? "bg-white shadow-md dark:bg-gray-900" : ""}`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-300
+        ${
+          navBg
+            ? "bg-white/95 dark:bg-gray-950/95 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800"
+            : "bg-transparent"
+        }`}
     >
-      <div className="flex items-center h-full justify-between w-[92%] mx-auto">
-        <div className="flex items-center sm:space-x-20">
+      <div className="w-[92%] mx-auto h-[72px] flex items-center justify-between">
 
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-cyan-800 dark:bg-white rounded-full flex items-center justify-center">
-              <HiRectangleGroup className="w-5 h-5 text-white dark:text-black" />
-            </div>
-            <h1 className="hidden sm:block md:text-2xl text-cyan-800 font-bold dark:text-white">
-              Kabul Hire
-            </h1>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-200 dark:shadow-blue-900">
+            <BriefcaseIcon className="w-4.5 h-4.5 text-white" strokeWidth={2} />
           </div>
+          <span className="hidden sm:block text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+            Kabul<span className="text-blue-600">Hire</span>
+          </span>
+        </Link>
 
-          <div className="hidden lg:flex items-center space-x-10">
-            {Navlinks.map((link) => (
+        {/* Desktop nav links */}
+        <nav className="hidden lg:flex items-center gap-1">
+          {Navlinks.map((link) => {
+            const isActive = pathname === link.url;
+            return (
               <Link
                 key={link.id}
                 href={link.url}
-                className="text-base hover:text-cyan-700 font-medium transition-all duration-200"
+                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150
+                  ${
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30"
+                      : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
               >
-                <p>{link.label}</p>
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-600 dark:bg-blue-400" />
+                )}
               </Link>
-            ))}
-          </div>
+            );
+          })}
+        </nav>
+
+        {/* Right actions */}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/login"
+            className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-150"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/post-job"
+            className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-lg transition-all duration-150 shadow-sm shadow-blue-200 dark:shadow-blue-900"
+          >
+            Post a Job
+          </Link>
+          <ThemeToggler />
+          <button
+            onClick={openNav}
+            aria-label="Open menu"
+            className="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+          >
+            <HiBars3BottomRight className="w-6 h-6" />
+          </button>
         </div>
 
-        <div className="flex items-center space-x-4">
-          <button className="px-8 py-2.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-300 dark:text-black transition-all">
-            Login / Register
-          </button>
-          <button className="px-8 py-2.5 text-sm sm:block hidden rounded-lg bg-cyan-700 hover:bg-cyan-900 text-white transition-all">
-            Job Post
-          </button>
-          <ThemeToggler />
-          <HiBars3BottomRight
-            onClick={openNav}
-            className="w-8 h-8 cursor-pointer text-black lg:hidden dark:text-white"
-          />
-        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
