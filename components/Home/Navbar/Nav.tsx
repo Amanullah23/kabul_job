@@ -77,7 +77,7 @@ const Nav = ({ openNav }: Props) => {
             Sign in
           </Link>
           <Link
-            href="/post-job"
+            href="/employers#post-job"
             className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-lg transition-all duration-150 shadow-sm shadow-blue-200 dark:shadow-blue-900"
           >
             Post a Job

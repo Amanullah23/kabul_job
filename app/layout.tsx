@@ -1,24 +1,12 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import ResponsiveNav from "@/components/Home/Navbar/ResponsiveNav";
 import Provider from "@/components/Hoc/Provider";
-import Footer from "@/components/Home/Footer/Footer";
+import NavFooterWrapper from "@/components/Hoc/NavFooterWrapper";
 import ScrollToTop from "@/components/Helper/ScrollToTop";
 
 const font = Roboto({
-  weight: [
-    "100",
-    "200",
-    "300",
-    "300",
-    "400",
-    "500",
-    "600",
-    "700",
-    "800",
-    "900",
-  ],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
@@ -36,10 +24,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
         <Provider>
-          <ResponsiveNav />
-          {children}
-          <Footer/>
-          <ScrollToTop/>
+          <NavFooterWrapper>
+            {children}
+          </NavFooterWrapper>
+          <ScrollToTop />
         </Provider>
       </body>
     </html>
