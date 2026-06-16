@@ -83,7 +83,7 @@ const MobileNav = ({ closeNav, showNav }: Props) => {
             Sign in
           </Link>
           <Link
-            href="/post-job"
+            href="/employers#post-job"
             onClick={closeNav}
             className="w-full text-center py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm"
           >
